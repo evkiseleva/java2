@@ -246,13 +246,8 @@ public class Calculator {
     }
 
 
-    /**
-     * Стартовая точка
-     * @param args аргументы
-     * */
-    public static void main(String[] args) {
+    public static String checkAndChange(String expressionText){
         Scanner in = new Scanner(System.in);
-        String expressionText = "(2 * c / d) * 10 - c * 2"; // + (b * 2 - a) * ((1-d)/4)";
         for (int i = 0; i < expressionText.length(); i++)
         {
             int value;
@@ -318,6 +313,15 @@ public class Calculator {
                 }
             }
         }
+        return expressionText;
+    }
+    /**
+     * Стартовая точка
+     * @param args аргументы
+     * */
+    public static void main(String[] args) {
+        String expressionText = "(2 * c / d) * 10 - c "; //* 2 + (b * 2 - a) * ((1-d)/4)";
+        expressionText = checkAndChange(expressionText);
         System.out.println(expressionText );
         List<Lexeme> lexemes = lexAnalyze(expressionText);
         LexemeBuffer lexemeBuffer = new LexemeBuffer(lexemes);
