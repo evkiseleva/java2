@@ -76,6 +76,7 @@ public class Calculator {
 
         /**
          * Метод, возвращающий следующую лексему
+         * @return следующая в списке лексема
          * */
         public Lexeme next() {
             return lexemes.get(pos++);
@@ -89,6 +90,7 @@ public class Calculator {
         }
         /**
          * Метод, возвращающий позицию
+         * @return  позиция в буффере
          * */
         public int getPos() {
             return pos;
@@ -162,6 +164,8 @@ public class Calculator {
 
     /**
      * Метод, возвращающий значение или ошибку, если данное выражение некорректное
+     * @param lexemes буффер лексем
+     * @return число
      * */
     public static int factor(LexemeBuffer lexemes) {
         Lexeme lexeme = lexemes.next();
@@ -182,6 +186,8 @@ public class Calculator {
 
     /**
      * Метод, возвращающий значение произведения или деления
+     * @param lexemes буффер лексем
+     * @return результат произведения или деления
      * */
     public static int multDiv(LexemeBuffer lexemes) {
         int value = factor(lexemes);
@@ -203,6 +209,8 @@ public class Calculator {
 
     /**
      * Метод, возвращающий значение суммы или разности
+     * @param lexemes буффер лексем
+     * @return результат суммы/разности
      * */
     public static int addSub(LexemeBuffer lexemes) {
         int value = multDiv(lexemes);
@@ -224,6 +232,8 @@ public class Calculator {
 
     /**
      * Метод, возвращающий значение выражения
+     * @param lexemes буффер лексем
+     * @return результат выражения
      * */
     public static int expr(LexemeBuffer lexemes) {
         Lexeme lexeme = lexemes.next();
@@ -238,7 +248,7 @@ public class Calculator {
 
     /**
      * Стартовая точка
-     * @param args
+     * @param args аргументы
      * */
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
