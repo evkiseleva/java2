@@ -10,21 +10,41 @@ public class Calculator {
 //    plusminus: multdiv ( ( '+' | '-' ) multdiv )* ;
 //    multdiv : factor ( ( '*' | '/' ) factor )* ;
 //    factor : NUMBER | '(' expr ')' ;
-
+    /**
+     * Объединение, определяющее тип лексемы
+     * */
     public enum LexemeType {
         leftBracket, rightBracket, addition, subtraction, multiplication, division,
         number, eof;
     }
 
+    /**
+     * Класс Лексема
+     * */
     public static class Lexeme {
+        /**
+         * Поле, определяющее тип лексемы
+         * */
         LexemeType type;
+        /**
+         * Поле, определяющее значение лексемы
+         * */
         String value;
-
+        /**
+         * Конструктор
+         * @param type - тип лексемы
+         * @param value - значение лексемы
+         * */
         public Lexeme(LexemeType type, String value) {
             this.type = type;
             this.value = value;
         }
 
+        /**
+         *Конструктор
+         * @param type - тип лексемы
+         * @param value - значение лексемы
+         * */
         public Lexeme(LexemeType type, Character value) {
             this.type = type;
             this.value = value.toString();
@@ -32,28 +52,54 @@ public class Calculator {
 
     }
 
+    /**
+     * Класс Буффер лексем
+     * */
     public static class LexemeBuffer {
+        /**
+         * Позиция
+         * */
         private int pos;
 
+        /**
+         * Список лексем
+         * */
         public List<Lexeme> lexemes;
 
+        /**
+         * Конструктор
+         * @param lexemes  - Список лексем
+         * */
         public LexemeBuffer(List<Lexeme> lexemes) {
             this.lexemes = lexemes;
         }
 
+        /**
+         * Метод, возвращающий следующую лексему
+         * */
         public Lexeme next() {
             return lexemes.get(pos++);
         }
 
+        /**
+         * Метод, сдвигающий на 1 позицию назад
+         * */
         public void back() {
             pos--;
         }
-
+        /**
+         * Метод, возвращающий позицию
+         * */
         public int getPos() {
             return pos;
         }
     }
 
+    /**
+     * Метод, анализирующий выражение и возвращающий список лексем
+     * @param expText - математическое выражение
+     * @return список лексем
+     * */
     public static List<Lexeme> lexAnalyze(String expText) {
         ArrayList<Lexeme> lexemes = new ArrayList<>();
         int pos = 0;
@@ -114,6 +160,9 @@ public class Calculator {
         return lexemes;
     }
 
+    /**
+     * Метод, возвращающий значение или ошибку, если данное выражение некорректное
+     * */
     public static int factor(LexemeBuffer lexemes) {
         Lexeme lexeme = lexemes.next();
         switch (lexeme.type) {
@@ -123,16 +172,17 @@ public class Calculator {
                 int value = addSub(lexemes);
                 lexeme = lexemes.next();
                 if (lexeme.type != LexemeType.rightBracket) {
-                    throw new RuntimeException("Unexpected token: " + lexeme.value
-                            + " at position: " + lexemes.getPos());
+                    throw new RuntimeException("Ошибка в выражении");
                 }
                 return value;
             default:
-                throw new RuntimeException("Unexpected token: " + lexeme.value
-                        + " at position: " + lexemes.getPos());
+                throw new RuntimeException("Ошибка в выражении");
         }
     }
 
+    /**
+     * Метод, возвращающий значение произведения или деления
+     * */
     public static int multDiv(LexemeBuffer lexemes) {
         int value = factor(lexemes);
         while (true) {
@@ -151,6 +201,9 @@ public class Calculator {
         }
     }
 
+    /**
+     * Метод, возвращающий значение суммы или разности
+     * */
     public static int addSub(LexemeBuffer lexemes) {
         int value = multDiv(lexemes);
         while (true) {
@@ -169,6 +222,9 @@ public class Calculator {
         }
     }
 
+    /**
+     * Метод, возвращающий значение выражения
+     * */
     public static int expr(LexemeBuffer lexemes) {
         Lexeme lexeme = lexemes.next();
         if (lexeme.type == LexemeType.eof) {
@@ -180,12 +236,10 @@ public class Calculator {
     }
 
 
-
-
-
-
-
-
+    /**
+     * Стартовая точка
+     * @param args
+     * */
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         String expressionText = "(2 * c / d) * 10 - c * 2"; // + (b * 2 - a) * ((1-d)/4)";
